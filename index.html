@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.a{
+			margin: 20px 20px 20px 20px;
+			height: 600px;
+			border-right: 2px black solid;
+			border-left: 2px black solid;
+		}
+		.b{
+			height: 20px;
+			padding-bottom: 2px;
+			background-color: #ccc;
+		}
+		.c{
+			float: left;
+		    width: 300px;
+		    height: 20px;
+			text-align: right;
+			margin-right: 10px;
+			background-color: #ccc;
+		}
+		.d{ 
+			width: 1000px;
+			height: 20px;
+			float: left;
+			color: red;
+			overflow: hidden;
+		}
+		#tip{
+			margin: 0px 0px 0px 0px;
+			font-size: 16px;
+			color: red;
+		}
+		div{
+			display: block;
+		}
+		*{
+			padding: 0;
+			margin: 0;
+		}
+		.e{
+			width: 1200px;
+			height: 500px;
+			margin: 100px auto;
+			position: relative;
+			overflow: hidden;
+		}
+		.e1{
+			width: 15000px;
+			position: absolute;
+			left: -1200px;
+			
+		}
+		.e1 div{
+			float: left;
+			width: 1200px;
+			overflow:hidden; 
+		}
+		#left{
+			left: 50px;
+		}
+		#right{
+			right: 50px;
+		}
+		.e span{
+			display: block;
+			width: 30px;
+			height: 50px;
+			text-align: center;
+			cursor: pointer;
+			color: #ffffff ;
+			top: 150px;
+			line-height: 50px;
+			background: red;
+			font-size: 30px;
+			position: absolute;
+			opacity: 0;
+
+		}
+		#nav{
+			position: absolute;
+			left: 500px;
+			bottom: 120px;
+
+		}
+		#nav li{
+			text-align: center;
+			list-style-type: none;
+			float: left;
+			width: 20px;
+			height: 20px;
+			background: #ccc;
+			cursor: pointer;
+			margin: 0 10px;
+			border-radius: 50%;
+		}
+		#nav .active{
+			background: red;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="a">
+		<div class="b">
+			<div class="c">
+				<img style="padding-top: 2px"  src="images/a15.png" alt="">
+			</div>
+			<div class="d" >
+				<p id="tip" style="margin-left: 600px">[温馨提示]最近有不少不法分子在网上骗人，请大家注意！！！</p>
+			</div>
+		</div>
+		<div class="e">
+			<div class="e1" ">
+			<div><img src="images/b5.png" alt=""></div>
+			<div><img src="images/b1.png" alt=""></div>
+			<div><img src="images/b2.png" alt=""></div>
+			<div><img src="images/b3.png" alt=""></div>
+			<div><img src="images/b4.png" alt=""></div>
+			<div><img src="images/b5.png" alt=""></div>
+			<div><img src="images/b1.png" alt=""></div>
+			</div>
+			<span id="left"> < </span>
+			<span id="right"> > </span>
+			<ul id="nav">
+				<li class="active">1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+				<li>5</li>
+			</ul>
+
+		</div>
+
+		
+	</div>
+</body>
+<script src="js/animate.js">
+</script>
+<script>
+	var index=1;
+	var tip=document.getElementById("tip");
+	var nav=document.getElementById("nav");
+	var e1=document.getElementsByClassName("e1");
+	var li=nav.getElementsByTagName("li");
+	var span=document.getElementsByTagName("span");
+	var e=document.getElementsByClassName("e");
+	var ismoving=false;
+	var inter=setInterval(function(){
+		var l=parseInt(tip.style.marginLeft);
+			l-=5;
+			if(l<-200) l=600;
+			tip.style.marginLeft=l+"px";
+	}, 100)
+	function next(){
+		if(ismoving){
+			return;
+		}
+			ismoving=true;
+			index++;
+			navchange();
+    		animate(e1[0],{left:-1200*index},function(){
+    			if(index===6){
+    				e1[0].style.left="-1200px";
+    				index=1;
+    			}
+    			ismoving=false;
+			});
+	}
+	var timer=setInterval(next, 2000)
+    e[0].onmouseover=function(){
+    	animate(left,{opacity:50})
+    	animate(right,{opacity:50})
+    	clearInterval(timer)
+    }
+    e[0].onmouseout=function(){
+    	animate(left,{opacity:0})
+    	animate(right,{opacity:0})
+    	timer=setInterval(next,2000)
+    }
+    span[0].onclick=function(){
+    	if(ismoving) return;
+    	ismoving=true;
+    	index--;
+    	animate(e1[0],{left:-1200*index},function(){
+    		if(index===0){
+    			e1[0].style.left="-6000px";
+    			index=5;
+    		}
+    		ismoving=false;
+		});
+    }
+    span[1].onclick=next;
+	for(var i=0;i<li.length;i++){
+		li[i].idx=i;
+		li[i].onclick=function(){
+			index=this.idx+1;
+			navchange();
+			animate(e1[0],{left:-index*1200});
+		}
+	}
+	function navchange(){
+		for(var i=0;i<li.length;i++){
+			li[i].className='';
+		}
+		if(index===6)
+		    li[0].className="active";
+		else
+			li[index-1].className="active"
+	}
+
+</script>
+</html>
